@@ -119,6 +119,13 @@ First, we want to preprocess the data using the functions from BayesSpace:
 library(BayesSpace)
 example_sce <- example_sce[, colSums(counts(example_sce)) > 0]
 example_sce <- mySpatialPreprocess(example_sce, platform="Visium")
+
+### modify example_sce to have the needed parameters for BayesSpace to draw plots
+### usually not needed if the data is directly read from Visium platform
+example_sce$"array_col" <- example_sce$col
+example_sce$"array_row" <- example_sce$row
+example_sce$"pxl_col_in_fullres" <- example_sce$imagecol
+example_sce$"pxl_row_in_fullres" <- example_sce$imagerow
 ```
 
 Second, we assign weights to each cell type and check the entropy at different radii.
