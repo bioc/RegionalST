@@ -240,6 +240,62 @@ table(exampleRes[[3]]$allDE$Comparison)
 ```
 
 
+## Perform Cross-regional Cell Type-Specific Differential Analysis with proportions and self-defined regions
+You can also provide the region spot IDs to the function to perform cell type-specific differential analysis. 
+Here I still use the spot we identified as an example, but you can modify it to your own regions.
+
+```{r DEself1, eval=TRUE, message=FALSE, progress=FALSE, warning=FALSE}
+thisID1 <- S4Vectors::metadata(example_sce)$selectCenters$selectID[1]
+thisRadius1 <- S4Vectors::metadata(example_sce)$selectCenters$selectRadius[1]
+OutRegRes1 <- RegionalST::FindRegionalCells(example_sce,
+                                            centerID = thisID1,
+                                            radius = 20,
+                                            enhanced = FALSE,
+                                            doPlot = FALSE,
+                                            returnPlot = FALSE)
+
+thisID2 <- S4Vectors::metadata(example_sce)$selectCenters$selectID[2]
+thisRadius2 <- S4Vectors::metadata(example_sce)$selectCenters$selectRadius[2]
+OutRegRes2 <- RegionalST::FindRegionalCells(example_sce,
+                                            centerID = thisID2,
+                                            radius = 20,
+                                            enhanced = FALSE,
+                                            doPlot = FALSE,
+                                            returnPlot = FALSE)
+Regional1ID <- OutRegRes1$closeID
+Regional2ID <- OutRegRes2$closeID
+
+head(Regional1ID)
+head(Regional2ID)
+```
+
+Perform cell type-specific differential analysis across the two regions:
+
+```{r DEself2, eval=TRUE, message=FALSE, progress=FALSE, warning=FALSE}
+CTS_DE <- GetCellTypeSpecificDE_withProp(example_sce,
+                                           Regional1ID = Regional1ID,
+                                           Regional2ID = Regional2ID,
+                                           n_markers = 10,
+                                           angle = 30,
+                                           hjust = 0,
+                                           size = 3,
+                                           padj_filter = 1,
+                                           doHeatmap = FALSE)
+
+head(CTS_DE$allDE)
+```
+
+Perform GSEA analysis using the identified pathways:
+```{r DEself3, eval=TRUE, message=FALSE, progress=FALSE, warning=FALSE}
+lCTres <- list(CTS_DE)
+CTres <- DoGSEA(lCTres, whichDB = "hallmark", withProp = TRUE)
+DrawDotplot(CTres, CT = 1, angle = 15, vjust = 1, chooseP = "padj")
+DrawDotplot(CTres, CT = 2, angle = 15, vjust = 1, chooseP = "padj")
+DrawDotplot(CTres, CT = 3, angle = 15, vjust = 1, chooseP = "padj")
+DrawDotplot(CTres, CT = 4, angle = 15, vjust = 1, chooseP = "padj")
+DrawDotplot(CTres, CT = 5, angle = 15, vjust = 1, chooseP = "padj")
+```
+
 # Analysis with cell type information
 
 ## Obtain cell type labels
