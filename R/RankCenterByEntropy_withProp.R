@@ -20,6 +20,10 @@
 #'                                 0.025,0.05,
 #'                                 0.25,0.05,0.025))
 #' example_sce <- mySpatialPreprocess(example_sce, platform="Visium")
+#' example_sce$"array_col" <- example_sce$col
+#' example_sce$"array_row" <- example_sce$row
+#' example_sce$"pxl_col_in_fullres" <- example_sce$imagecol
+#' example_sce$"pxl_row_in_fullres" <- example_sce$imagerow
 #' ## I set our min_raius as 10 and radius vector as 10 and 15 as the example dataset is very small
 #' example_sce <- RankCenterByEntropy_withProp(example_sce, weight,
 #'                                     selectN = round(length(example_sce$spot)/10),
