@@ -2,6 +2,11 @@
 \title{RegionalST News}
 \encoding{UTF-8}
 
+\section{Version 1.5.6}{\itemize{
+\item Fix bugs when plotting figures with BayesSpace
+}}
+
+
 \section{Version 0.99.8}{\itemize{
 \item Add unit tests
 \item Add input checking functions
